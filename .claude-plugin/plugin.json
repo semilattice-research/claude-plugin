@@ -1,0 +1,9 @@
+{
+  "name": "semilattice",
+  "version": "0.1.0",
+  "description": "Semilattice audience simulations in Claude Code",
+  "author": {
+    "name": "Joseph Wright",
+    "email": "joseph@semilattice.ai"
+  }
+}

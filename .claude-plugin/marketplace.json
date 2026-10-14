@@ -1,0 +1,17 @@
+{
+  "name": "semilattice",
+  "owner": {
+    "name": "Joseph Wright",
+    "email": "joseph@semilattice.ai"
+  },
+  "metadata": {
+    "description": "Semilattice plugins for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "semilattice",
+      "source": "./",
+      "description": "Semilattice audience simulations in Claude Code"
+    }
+  ]
+}
