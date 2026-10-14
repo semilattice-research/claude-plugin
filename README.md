@@ -72,7 +72,8 @@ server at `mcp.semilattice.ai`, which receives:
 - **Page URLs** for User Journey runs, which Semilattice visits to test the flow.
 - **Your account identity**, through the OAuth sign-in.
 
-Simulations and their results are saved to your Semilattice account.
+Simulations and their results are saved to your Semilattice account. See the
+[privacy policy](https://semilattice.ai/privacy).
 
 ## Layout
 
@@ -80,6 +81,7 @@ Simulations and their results are saved to your Semilattice account.
 .claude-plugin/
   plugin.json             # plugin manifest
   marketplace.json        # lets this repo be added as a marketplace
+  icon.png                # listing icon
 .mcp.json                 # Semilattice MCP server
 skills/
   semilattice-mcp/

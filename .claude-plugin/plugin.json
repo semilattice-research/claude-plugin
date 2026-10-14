@@ -9,6 +9,7 @@
     "url": "https://semilattice.ai"
   },
   "homepage": "https://docs.semilattice.ai/mcp/introduction",
+  "privacyPolicyUrl": "https://semilattice.ai/privacy",
   "license": "MIT",
   "keywords": ["semilattice", "simulation", "user-research", "user-journey", "user-models", "mcp"]
 }
