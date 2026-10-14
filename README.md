@@ -1,7 +1,7 @@
-# Semilattice plugin for Claude Code
+# Semilattice
 
-Simulate how real users react to product changes, concepts, and decisions — from
-inside Claude Code.
+Simulate how users respond to product changes, concepts and decisions,
+without leaving Claude.
 
 The plugin bundles two things:
 
@@ -30,6 +30,15 @@ to about half an hour.
 
 ## Install
 
+### Claude.ai and Cowork
+
+1. Add the Semilattice plugin from the plugin directory.
+2. Open the plugin's **Connectors** tab and connect Semilattice.
+3. Sign in with your Google email. This creates a Semilattice account if you don't
+   have one.
+
+### Claude Code
+
 ```
 /plugin marketplace add semilattice-research/claude-plugin
 /plugin install semilattice@semilattice
@@ -42,12 +51,28 @@ Then sign in:
 3. Complete the sign-in flow with your Google email. This creates a Semilattice
    account if you don't have one.
 
-Ask Claude to test something with users and the skill will load.
+If you already added the server by hand with
+`claude mcp add --transport http semilattice https://mcp.semilattice.ai`, remove it
+with `claude mcp remove semilattice` so Claude sees one set of tools.
 
-If you already added the server with
-`claude mcp add --transport http semilattice https://mcp.semilattice.ai`, or connected
-Semilattice as a claude.ai connector, remove the duplicate so Claude sees one set of
-tools.
+## Use
+
+Ask Claude to test something with users, for example "test whether this tagline
+lands with UK developers" or "plan simulations for the claims in this PRD". The skill
+loads, proposes a plan and its cost in time, and asks before running anything.
+
+## Data
+
+The plugin itself stores nothing. Everything it does goes through the Semilattice MCP
+server at `mcp.semilattice.ai`, which receives:
+
+- **Simulation inputs:** the goals, concepts, option lists and context Claude writes
+  into each simulation, which can include text drawn from documents you share with
+  Claude.
+- **Page URLs** for User Journey runs, which Semilattice visits to test the flow.
+- **Your account identity**, through the OAuth sign-in.
+
+Simulations and their results are saved to your Semilattice account.
 
 ## Layout
 
@@ -75,3 +100,7 @@ claude plugin validate .       # check the manifests
 - The skill: https://docs.semilattice.ai/mcp/skill
 - User models: https://docs.semilattice.ai/user-models
 - Support: support@semilattice.ai
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).

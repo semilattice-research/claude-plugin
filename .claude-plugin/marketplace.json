@@ -6,13 +6,13 @@
     "url": "https://semilattice.ai"
   },
   "metadata": {
-    "description": "Semilattice plugins for Claude Code"
+    "description": "Semilattice plugins for Claude"
   },
   "plugins": [
     {
       "name": "semilattice",
       "source": "./",
-      "description": "Simulate how real users react to product changes, concepts, and decisions."
+      "description": "Simulate how users respond to product changes, concepts and decisions."
     }
   ]
 }
