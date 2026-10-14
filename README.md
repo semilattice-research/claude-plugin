@@ -81,7 +81,6 @@ Simulations and their results are saved to your Semilattice account. See the
 .claude-plugin/
   plugin.json             # plugin manifest
   marketplace.json        # lets this repo be added as a marketplace
-  icon.png                # listing icon
 .mcp.json                 # Semilattice MCP server
 skills/
   semilattice-mcp/
