@@ -1,11 +1,19 @@
 {
   "name": "semilattice",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simulate how real users react to product changes, concepts, and decisions. Connects the Semilattice MCP server and adds a skill that turns a PRD, spec or idea into User Research and User Journey simulations.",
   "author": {
-    "name": "Joseph Wright",
-    "email": "joseph@semilattice.ai"
+    "name": "Semilattice",
+    "email": "support@semilattice.ai",
+    "url": "https://semilattice.ai"
   },
   "homepage": "https://docs.semilattice.ai/mcp/introduction",
-  "keywords": ["semilattice", "simulation", "user-research", "user-journey", "user-models", "mcp"]
+  "keywords": [
+    "semilattice",
+    "simulation",
+    "user-research",
+    "user-journey",
+    "user-models",
+    "mcp"
+  ]
 }
