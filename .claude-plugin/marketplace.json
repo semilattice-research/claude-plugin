@@ -11,7 +11,7 @@
     {
       "name": "semilattice",
       "source": "./",
-      "description": "Semilattice audience simulations in Claude Code"
+      "description": "Simulate how real users react to product changes, concepts, and decisions."
     }
   ]
 }

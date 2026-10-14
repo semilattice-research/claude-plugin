@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "semilattice": {
+      "type": "http",
+      "url": "https://mcp.semilattice.ai"
+    }
+  }
+}
