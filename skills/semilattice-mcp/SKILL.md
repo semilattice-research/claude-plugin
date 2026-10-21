@@ -15,10 +15,25 @@ the rest visible.
 
 ## What the pieces are
 
+**Context** — the briefing on the user's whole area of work: their company, or
+the product or area they own, or for an agency the client. Every project reads the
+same one, and a project's own question, feature or hypothesis never goes in it.
+`get_context` reads it. When the user has none, write one with them before you
+plan anything: draft it with `create_context` from what they tell you and their
+website or documents, and show them the draft before saving.
+
 **Project** — a container. Call `create_project`, then pass its `project_id` to
-every `create_simulation`. Simulations join the project's latest round, and
-`get_project` reads the rounds plus the synthesis of any round that has finished.
-Create one whenever the work needs more than a single simulation.
+every `create_simulation`. Create one whenever the work needs more than a single
+simulation. Check `list_projects` first when the work may belong with a project
+the user already has.
+
+**Round** — one phase of a project: the artefact it tests, its simulations, and one
+synthesis across them. Start one with `start_round` for a new version of a document
+or a deep dive on one part of it, and attach what it tests with `attach_artefact`.
+Keep adding to the round you are in while the same exploration continues. There is
+no current round: pass `round_id` to `create_simulation`, or the simulation joins
+the latest round. `get_project` reads every round, what it tests, and its synthesis.
+`rename_round` sets a round's title, and a title you set is kept.
 
 **Simulation** — one goal, its inputs, and one or more user models. Two modes:
 `research` (survey-style, called **User Research** when talking to the user) and
@@ -26,15 +41,17 @@ Create one whenever the work needs more than a single simulation.
 prediction engines; plan with equal confidence in either.
 
 **User model** — an audience. `list_user_models` returns ids, accuracy figures,
-`simulacrum_count` and `simulation_engine`.
+`simulacrum_count`, `simulation_engine` and `owned_by_org`. When the account has
+no user models it returns a message instead: pass it on and do not plan
+simulations that cannot run.
 
-**Engines** — `anacreon` and `answers-1` are the two engines behind the user models,
-and they pace a run differently. An `anacreon` simulation takes roughly 15 minutes
-whatever its length; `answers-1` answers 4 questions at a time at about 30 seconds
-each, so its wait scales with the question count. An audience is covered by one
-engine or the other, never both, so the engine is not a choice you make: it follows
-from which model matches the audience. `list_user_models` reports each model's own
-accuracy.
+**Engines** — `anacreon` runs every public user model; some organisations' older
+models of their own run on `answers-1`. They pace a run differently. An `anacreon`
+simulation takes roughly 15 minutes whatever its length; `answers-1` answers 4
+questions at a time at about 30 seconds each, so its wait scales with the question
+count. An audience is covered by one engine or the other, never both, so the engine
+is not a choice you make: it follows from which model matches the audience.
+`list_user_models` reports each model's engine and its own accuracy.
 
 **Claim** — any assertion or assumption about users that the input makes or depends
 on. A claim with variants (five headlines, three price points) is one claim
@@ -49,11 +66,28 @@ option list, the concept as it should be described to respondents, the context t
 makes the question sharp.
 
 `update_simulation_plan` can rewrite the research question, the hypothesis and the
-whole survey question list while status is `planned`. Use it to repair a plan, not
-to author one: if the *inputs* were wrong, create a replacement simulation rather
-than rewriting every question by hand. Passing `survey_questions` replaces the
-entire list. There is no delete over MCP, so say plainly that the abandoned
-simulation is still in the project for the user to remove in the web app.
+survey questions while status is `planned`. Use it to repair a plan, not to author
+one: if the *inputs* were wrong, create a replacement simulation rather than
+rewriting every question by hand. Change one question with `question_edits` (by
+id), append with `add_questions`, drop with `delete_question_ids`: every question
+you leave alone keeps its id. Passing `survey_questions` instead replaces the
+entire list and reissues every id, so re-read the simulation before editing again.
+The two cannot be combined in one call. For a user model in another language,
+send `question_text_local` and `answer_options_local` with each question, since
+that wording is what respondents are asked. A journey task's fields follow its
+goal's `journey_task_shape` in `list_simulation_schema`: goal-directed tasks carry
+an objective and success criteria, observation tasks an objective and a debrief
+question. To remove the abandoned simulation, name it and ask the user, then call
+`delete_simulation` with `confirmed=true`.
+
+To compare a set of things — features, messages, prices, concepts — pass
+`survey_design` to `create_simulation`. An `item_sets` entry gives each item its own
+question on one shared scale, so the items can be compared; `custom_questions` are
+asked word for word, so each must name what it asks about. The plan then holds
+exactly one question per item plus one per custom question. If the question writer
+returns a different count, the simulation ends `failed` with a `failure_reason`:
+create it again. Without `survey_design` the writer may fold the options into one
+"which of these" question that cannot be compared.
 
 Mechanics every plan has to respect:
 
@@ -215,11 +249,15 @@ not connected. Say that and give the user both the server URL,
 the list of clients that cannot connect at all. Stop there and do not plan
 simulations you cannot run.
 
-1. `list_user_models`, and `list_simulation_schema(mode)` for the goal list. Call
+1. `get_context`. If `has_context` is false, write the context with the user
+   (see **Context** above) before anything else. Then `list_user_models`, and
+   `list_simulation_schema(mode)` for the goal list. Call
    `list_simulation_schema(mode, goal)` for the input keys of every goal you have
    not used before, all in one response.
-2. `create_project` when the work needs more than one simulation. Pass its
-   `project_id` to every `create_simulation` so they stay together.
+2. `create_project` when the work needs more than one simulation, unless it
+   belongs in a project from `list_projects`. Pass its `project_id` to every
+   `create_simulation` so they stay together. `list_simulations` shows what the
+   user has already run, so you can build on it rather than repeat it.
 3. `create_simulation` for each planned simulation, batched into one response rather
    than one call per turn.
 4. Each comes back `status='planning'`. Poll `get_simulation`; planning usually
@@ -232,13 +270,16 @@ simulations you cannot run.
 7. `run_simulation`, once per simulation, each with an explicit yes for that
    simulation. It spends something the user owns. Never read a yes into an ambiguous
    request. **Start every run in the batch before you wait on any of them.** A
-   round's synthesis is written once, when the first batch of its simulations all
-   reach `completed`; anything you run after that lands in a round whose synthesis
-   has already been written and will not be rewritten.
+   round's synthesis is written when its running simulations have all finished. If
+   `get_project` shows `synthesis_stale: true` for a round, call
+   `regenerate_synthesis`; it replaces any edits made to that synthesis, so say so
+   first if the user has edited it.
 8. Poll `get_simulation`: wait about `estimated_seconds` before the first call, then
    at most once a minute. Polling more often does not make a run finish sooner.
 9. At `completed`, read `synthesis`, `markdown`, and the per-question
-   `answer_distribution` (research) or `simulation_results` (journey).
+   `answer_distribution` (research) or `simulation_results` (journey). To see how
+   answers went together for the same respondent, use `read_respondent_answers`;
+   to see exactly how one journey session went, `read_journey_session`.
 
 Journey plans include `url_checks`, a pre-flight check of each test URL. If any
 check is not `ok` — unreachable, bot_blocked, login_wall — tell the user before
@@ -271,30 +312,30 @@ the document from scratch. An option that lost does not return to the option set
 
 Say so plainly rather than working around it.
 
-- **No artefact upload.** The document lives in your conversation, so what a
-  simulation needs from *it* has to reach the simulation through the goal's inputs.
-  The organisation's own context is different: it is attached server-side when a
+- **No planning from the artefact.** `attach_artefact` stores the document on its
+  round so the user and the synthesis can see what was tested; it plans nothing.
+  What a simulation needs from it still has to reach the simulation through the
+  goal's inputs. The context is different: it is attached server-side when a
   simulation is created, inheriting the project's. Do not restate who the company
   is, what it sells or who its audience is in your inputs — that arrives on its
   own, and repeating it only crowds out the detail the question writer needs.
-- **No round control.** Simulations join the project's latest round. `get_project`
-  reads every round and the synthesis each one reached, but you cannot start a
-  round, retitle one, or regenerate a synthesis. A project's whole life over MCP
-  happens in one round, so plan the work you want synthesised together, run it
-  together, and tell the user that a genuinely new phase wants a new project.
-- **No chat history.** You cannot read what the user and the in-app planner said to
-  each other, or write into that conversation. If the user has been working in the
-  web app, ask them what changed rather than assuming the project tells you.
-- **No respondent-level reads.** `get_simulation` returns distributions and the
-  synthesis, not how individual respondents answered.
+  Choose a different context only when the work is for a different company, client
+  or product line: pick one with `list_contexts`, or write one with
+  `create_context` from what the user tells you, and pass its id as `context_id`
+  to `create_project`. Testing a competitor's page still uses the user's own.
+- **No talking to the in-app planner.** If the user has worked on the project in
+  the web app, read what was said there with `read_planner_conversation`, and a
+  round's document with `read_artefact`. You cannot write into that conversation,
+  and nothing you do asks the in-app planner anything. Round writes are refused
+  while it is mid-turn; wait and retry.
 - **No cross-tabulation, subgroup filtering, ranking or open text.** See the
   mechanics above; these are properties of the survey, not gaps in the API.
 
 ## Vocabulary
 
 A **user model** is an audience; the simulated people inside one are **simulacra**
-or **respondents**. A **round** is one phase of the work — its simulations and one
-synthesis. An **artefact** is a document attached to a round in the web app. A
+or **respondents**, called **simulated users** when talking to the user. A **round** is one phase of the work — its simulations and one
+synthesis. An **artefact** is the document or page a round tests. A
 **synthesis** is what a finished round concluded. `anacreon` and `answers-1` are the
 two simulation engines. The modes are **User Research** and **User Journey** when
 you name them to the user. These are Semilattice's words; do not substitute another
