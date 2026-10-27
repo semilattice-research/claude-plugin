@@ -1,7 +1,7 @@
 {
   "name": "semilattice",
   "displayName": "Semilattice",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Simulate how users respond to product changes, concepts and decisions. Connects the Semilattice MCP server and adds a skill that turns a PRD, spec or idea into User Research and User Journey simulations.",
   "author": {
     "name": "Semilattice",

@@ -1,6 +1,6 @@
 ---
 name: "semilattice-mcp"
-description: "Plan and run audience simulations through the Semilattice MCP. Use when someone wants to predict how a modelled audience responds to a product, feature, price, message or live page — decomposing a PRD, spec or idea into testable claims, choosing goals and user models, pricing the whole job, running the slice they pick, and reading the results back."
+description: "Plan and run audience simulations through the Semilattice MCP. Use when someone wants to predict how a modelled audience responds to a product, feature, price, message or live page — decomposing a PRD, spec or idea into testable claims, choosing goals, user models and segments, searching generated options for the best one, pricing the whole job, running the slice they pick, and reading the results back."
 ---
 
 # Semilattice MCP
@@ -44,6 +44,14 @@ prediction engines; plan with equal confidence in either.
 `simulacrum_count`, `simulation_engine` and `owned_by_org`. When the account has
 no user models it returns a message instead: pass it on and do not plan
 simulations that cannot run.
+
+**Segment** — a user model cut from another by filtering its simulacra's
+attributes, such as the 45-to-64-year-olds in a UK model. `get_user_model_attributes`
+lists the attributes and their exact values; `create_segment` makes one, and it
+then runs like any other user model, with its parent's accuracy. Only `anacreon`
+models can be segmented, a segment needs at least 100 simulated users, and its
+filters lock once a simulation has used it. Show the user the name and filters
+before creating one.
 
 **Engines** — `anacreon` runs every public user model; some organisations' older
 models of their own run on `answers-1`. They pace a run differently. An `anacreon`
@@ -102,8 +110,58 @@ Mechanics every plan has to respect:
   usage. "Users are satisfied with X" compiles to "does X as described appeal", and
   you should say so.
 - Respondents are never asked to role-play another audience. A claim about audience
-  B needs a model of B, and a claim about a subgroup needs a model of that
-  subgroup — questions cannot filter the population.
+  B needs a model of B, and a claim about a subgroup needs a segment of the model
+  that covers it — questions cannot filter the population.
+- A simulation holds at most 40 survey questions. A larger option set is split
+  across simulations of up to 40 items each.
+
+## Choosing a strategy
+
+Pick the narrowest strategy the user's words support, then plan it with the steps
+below.
+
+- **Single check.** One stimulus, one audience, one simulation. "Does this tagline
+  land with UK developers?"
+- **Compare.** Score the options the user gave against each other. "Which of these
+  five headlines works best?"
+- **Decompose.** Turn a document into claims and its decisions into option sets,
+  price the whole job, and run the slice the user picks. "Plan simulations for
+  this PRD."
+- **Explore.** A direction with no document: map the assumptions first, then any
+  strategy above. "Let's explore whether a podcast would work for us."
+- **Widen.** One round of generated alternatives scored alongside the user's own.
+  "Is there anything better than these?"
+- **Search.** Generate, score, keep the winners, and generate again from them,
+  over several rounds, then confirm the result. "Find the best headline."
+  "Optimise this message." "Keep going until it stops improving."
+- **Revise.** A new version of something already tested: test what changed and
+  what the last results left uncertain (see **Reading results back**).
+
+A simulation costs minutes, not a recruited panel, so the size of an option set is
+a choice, not a given. Whenever a claim asks which of something is best and more
+options could be written — headlines, names, messages, price points, bundles —
+name the next strategy up in one sentence with its price, and let the user take
+it or leave it. Words like "best", "optimise", "strongest" or "as many as it
+takes" ask for Search directly: state its budget before anything runs.
+
+### How Search runs
+
+1. Generate variants along named dimensions — angle, benefit, tone, length,
+   proof — not paraphrases of one idea. Each must be something the user could
+   ship.
+2. Score them in batches of up to 40 items on the same scale and stimulus. Put the
+   best option so far in every batch, so batches can be compared through it.
+3. Keep the top few. Generate the next round from what won, along the dimensions
+   that won. An option that lost does not return.
+4. Stop when a round's best no longer clearly beats the previous best, or the
+   budget runs out.
+5. Confirm: score the finalists together in one fresh simulation. The best of
+   many scores is partly noise, so report the confirmed scores, not the round
+   ones.
+
+Price the whole search up front — rounds, simulations, hours — and keep it in one
+project round. One yes to that budget covers every simulation inside it, so you do
+not stop to confirm each batch. Ask again before going past it.
 
 ## Planning: decompose, type, model, pack, price
 
@@ -122,8 +180,9 @@ Turn decisions into option sets. Where the input has committed to one option and
 plausible alternatives exist, the claim is "the committed option beats the
 alternatives", and the option set is the committed option plus the alternatives it
 displaced — only options someone would actually ship, never a straw option added to
-pad a set. A document that has decided things is a configuration: list the decisions
-it made and, for each, the options it did not take.
+pad a set. Generated options under Widen or Search meet the same bar. A document
+that has decided things is a configuration: list the decisions it made and, for
+each, the options it did not take.
 
 **Decisions are separable by default.** Test each one's options as its own claim,
 and the best option per decision composes into the best configuration. Plan a
@@ -169,7 +228,13 @@ One model per claim about one audience. Do not fan such a claim out across sever
 models to triangulate, and do not plan a pilot on one engine followed by a rerun on
 the other — the engines never cover the same audience. The one multi-model case is a
 claim about how audiences differ ("US buyers behave like UK ones"): there the same
-simulation runs on each audience and the answers are compared.
+simulation runs on each audience and the answers are compared. Groups inside one
+audience — age bands, regions — are compared as segments of the same model.
+
+A claim about a subgroup of an audience runs on a segment of the model that covers
+it. Reuse a segment from `list_user_models` when one matches; otherwise cut one
+with `create_segment`. When the filters match fewer than 100 simulated users,
+widen them with the user's agreement or record it as a limit of the work.
 
 When a claim is really one audience's belief about another audience, say so, and
 plan the direct test on whichever model covers the second audience. If no model
@@ -181,8 +246,9 @@ One research simulation holds one coherent enquiry: the claims that can be state
 together as a few research questions. Start a new simulation where the subject
 changes, not where a question count runs out.
 
-An option set of any size stays in one simulation. Never silently test a subset of
-an option list.
+An option set of up to 40 items stays in one simulation. A larger one is split
+across simulations, each carrying the best option so far for comparison. Never
+silently test a subset of an option list.
 
 Goals that take a single subject (`validate_concept`, `assess_change_risk`) compare
 nothing. To compare alternatives, restructure into a list-taking goal
@@ -205,6 +271,10 @@ After decomposing you know the full compile: N testable claims, M simulations,
 roughly T minutes. Say it in one sentence whenever the input contains more than the
 user asked about: "this PRD contains 14 testable claims; all of it is about 45
 minutes."
+
+Under Widen or Search the option count is yours to propose, so price it the same
+way: "200 variants is 5 simulations a round; three rounds and a confirmation is
+about an hour."
 
 Wait classes, stated whenever you propose a plan: interactive (`answers-1`, a couple
 of minutes), considered (`anacreon` simulations in parallel, about 15 minutes),
@@ -263,15 +333,18 @@ simulations you cannot run.
 4. Each comes back `status='planning'`. Poll `get_simulation`; planning usually
    takes 10 to 20 seconds.
 5. At `planned`, show the user the generated plan and get their confirmation before
-   running. If they ask to see the questions, or their words imply it, list every
-   survey question in full, in order, with its answer options. Do not sample,
-   summarise or truncate.
+   running. For a batch, an overview of the plans is enough; within an agreed
+   Search budget, show later rounds only if the user asks. If they ask to see the
+   questions, or their words imply it, list every survey question in full, in
+   order, with its answer options. Do not sample, summarise or truncate.
 6. `update_simulation_plan` for the edits they ask for, and nothing else.
-7. `run_simulation`, once per simulation, each with an explicit yes for that
-   simulation. It spends something the user owns. Never read a yes into an ambiguous
-   request. **Start every run in the batch before you wait on any of them.** A
-   round's synthesis is written when its running simulations have all finished. If
-   `get_project` shows `synthesis_stale: true` for a round, call
+7. `run_simulation`, once per simulation. Every run needs the user's yes, but one
+   yes can cover a batch when you stated its size: "this is 30 simulations, about
+   45 minutes". Ask again before running more than was agreed. It spends something
+   the user owns. Never read a yes into an ambiguous request. **Start every run
+   in the batch before you wait on any of them.** A round's synthesis is written
+   when its running simulations have all finished. If `get_project` shows
+   `synthesis_stale: true` for a round, call
    `regenerate_synthesis`; it replaces any edits made to that synthesis, so say so
    first if the user has edited it.
 8. Poll `get_simulation`: wait about `estimated_seconds` before the first call, then
@@ -329,14 +402,16 @@ Say so plainly rather than working around it.
   and nothing you do asks the in-app planner anything. Round writes are refused
   while it is mid-turn; wait and retry.
 - **No cross-tabulation, subgroup filtering, ranking or open text.** See the
-  mechanics above; these are properties of the survey, not gaps in the API.
+  mechanics above; these are properties of the survey, not gaps in the API. A
+  subgroup is tested by running on a segment, not by filtering a survey.
 
 ## Vocabulary
 
 A **user model** is an audience; the simulated people inside one are **simulacra**
-or **respondents**, called **simulated users** when talking to the user. A **round** is one phase of the work — its simulations and one
-synthesis. An **artefact** is the document or page a round tests. A
-**synthesis** is what a finished round concluded. `anacreon` and `answers-1` are the
+or **respondents**, called **simulated users** when talking to the user. A
+**segment** is a user model cut from another. A **round** is one phase of the
+work — its simulations and one synthesis. An **artefact** is the document or page
+a round tests. A **synthesis** is what a finished round concluded. `anacreon` and `answers-1` are the
 two simulation engines. The modes are **User Research** and **User Journey** when
 you name them to the user. These are Semilattice's words; do not substitute another
 product's.
