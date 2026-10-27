@@ -12,7 +12,7 @@
     {
       "name": "semilattice",
       "source": "./",
-      "description": "Simulate how users respond to product changes, concepts and decisions."
+      "description": "Fast feedback from simulated users before you build or ship. Test headlines, landing pages, pricing, features and product ideas, and see what share of an audience say they would sign up, pay or switch. Includes a skill that turns a PRD or spec into tests."
     }
   ]
 }

@@ -1,7 +1,22 @@
 # Semilattice
 
-Simulate how users respond to product changes, concepts and decisions,
-without leaving Claude.
+Fast feedback from simulated users, without leaving Claude. Test headlines, landing
+pages, pricing, features and product ideas before you build or ship, and see what
+share of an audience say they would sign up, pay or switch.
+
+## What you can ask Claude
+
+- "Which of these five headlines would UK developers click?"
+- "Would small business owners pay £20 a month for this?"
+- "Get user feedback on our new pricing page."
+- "Where do first-time visitors get stuck on our signup page?"
+- "What in this PRD is riskiest with users?"
+- "Find the best name for this feature."
+
+Each answer comes from a user model: an audience of simulated people built from
+survey and interview data and measured against real responses. There are 50+
+ready-made audiences, and custom ones can be built from your own data. A test takes
+from a few minutes to about half an hour.
 
 The plugin bundles two things:
 
@@ -11,22 +26,6 @@ The plugin bundles two things:
 - **The `semilattice-mcp` skill.** It tells Claude how to turn a PRD, spec or idea
   into testable claims, pick goals and user models, price the job, run the slice you
   choose and report what came back.
-
-Use it for discovery, concept validation, feature prioritisation, message testing,
-conversion flow optimisation, UX comprehension and usability testing.
-
-## Concepts
-
-- **User models** are AI representations of groups of people, built from surveys and
-  qualitative sources and measured against human ground truth. There are 50+ ready-made
-  models, and custom ones can be built.
-- **Simulations** predict specific user behaviour, tied to a decision or goal.
-- **Modes:** **User Research** simulates users answering questions about preferences
-  and attitudes. **User Journey** simulates users interacting with a live interface,
-  for flow and usability testing.
-
-The workflow is **plan → run → interpret**. A run takes anywhere from a few minutes
-to about half an hour.
 
 ## Install
 
@@ -54,6 +53,19 @@ Then sign in:
 If you already added the server by hand with
 `claude mcp add --transport http semilattice https://mcp.semilattice.ai`, remove it
 with `claude mcp remove semilattice` so Claude sees one set of tools.
+
+## Concepts
+
+- **User models** are AI representations of groups of people, built from surveys and
+  qualitative sources and measured against human ground truth. There are 50+ ready-made
+  models, and custom ones can be built.
+- **Simulations** predict specific user behaviour, tied to a decision or goal.
+- **Modes:** **User Research** simulates users answering questions about preferences
+  and attitudes. **User Journey** simulates users interacting with a live interface,
+  for flow and usability testing.
+
+The workflow is **plan → run → interpret**. A run takes anywhere from a few minutes
+to about half an hour.
 
 ## Use
 

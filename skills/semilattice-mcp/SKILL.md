@@ -1,6 +1,6 @@
 ---
 name: "semilattice-mcp"
-description: "Plan and run audience simulations through the Semilattice MCP. Use when someone wants to predict how a modelled audience responds to a product, feature, price, message or live page — decomposing a PRD, spec or idea into testable claims, choosing goals, user models and segments, searching generated options for the best one, pricing the whole job, running the slice they pick, and reading the results back."
+description: "Plan and run audience simulations through the Semilattice MCP. Use when someone wants to predict how a modelled audience responds to a product, feature, price, message or live page — decomposing a PRD, spec or idea into testable claims, choosing goals, user models and segments, searching generated options for the best one, pricing the whole job, running the slice they pick, and reading the results back. Also use when someone asks for user or customer feedback, user testing, a survey, usability testing or market research; asks which headline, name, price, message or feature people prefer; or wants to know whether people would sign up, pay, switch or understand something."
 ---
 
 # Semilattice MCP

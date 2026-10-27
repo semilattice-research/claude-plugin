@@ -1,8 +1,8 @@
 {
   "name": "semilattice",
   "displayName": "Semilattice",
-  "version": "0.3.0",
-  "description": "Simulate how users respond to product changes, concepts and decisions. Connects the Semilattice MCP server and adds a skill that turns a PRD, spec or idea into User Research and User Journey simulations.",
+  "version": "0.3.1",
+  "description": "Fast feedback from simulated users before you build or ship. Test headlines, landing pages, pricing, features and product ideas, and see what share of an audience say they would sign up, pay or switch. Includes a skill that turns a PRD or spec into tests.",
   "author": {
     "name": "Semilattice",
     "email": "support@semilattice.ai",
@@ -11,5 +11,29 @@
   "homepage": "https://docs.semilattice.ai/mcp/introduction",
   "privacyPolicyUrl": "https://semilattice.ai/privacy",
   "license": "MIT",
-  "keywords": ["semilattice", "simulation", "user-research", "user-journey", "user-models", "mcp"]
+  "keywords": [
+    "semilattice",
+    "simulation",
+    "user-research",
+    "user-journey",
+    "user-models",
+    "mcp",
+    "user-feedback",
+    "user-testing",
+    "usability-testing",
+    "ux-research",
+    "market-research",
+    "customer-research",
+    "survey",
+    "concept-testing",
+    "message-testing",
+    "copy-testing",
+    "pricing-research",
+    "willingness-to-pay",
+    "landing-page",
+    "product-validation",
+    "product-management",
+    "personas",
+    "synthetic-users"
+  ]
 }
