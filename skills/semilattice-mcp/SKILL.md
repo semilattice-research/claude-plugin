@@ -350,9 +350,11 @@ simulations you cannot run.
 8. Poll `get_simulation`: wait about `estimated_seconds` before the first call, then
    at most once a minute. Polling more often does not make a run finish sooner.
 9. At `completed`, read `synthesis`, `markdown`, and the per-question
-   `answer_distribution` (research) or `simulation_results` (journey). To see how
-   answers went together for the same respondent, use `read_respondent_answers`;
-   to see exactly how one journey session went, `read_journey_session`.
+   `answer_percentages` (research, 0-100) or `simulation_results` (journey, with
+   a numbered summary of each session). For the people behind the numbers,
+   `list_respondents` lists them: how each answered, or how each journey session
+   went. `read_respondent` reads one in full by number, including every step of
+   a journey.
 
 Journey plans include `url_checks`, a pre-flight check of each test URL. If any
 check is not `ok` — unreachable, bot_blocked, login_wall — tell the user before
