@@ -1,22 +1,25 @@
 # Semilattice
 
-Fast feedback from simulated users, without leaving Claude. Test headlines, landing
-pages, pricing, features and product ideas before you build or ship, and see what
-share of an audience say they would sign up, pay or switch.
+The user simulation layer for agentic marketing, product and design work, inside
+Claude. Semilattice gives you and your agents accurate user feedback in minutes, with
+state-of-the-art models built from real human data. Fix slop and optimise your work
+before users see it.
 
 ## What you can ask Claude
 
-- "Which of these five headlines would UK developers click?"
-- "Would small business owners pay £20 a month for this?"
-- "Get user feedback on our new pricing page."
-- "Where do first-time visitors get stuck on our signup page?"
-- "What in this PRD is riskiest with users?"
-- "Find the best name for this feature."
+- "Come up with a name for our new business account."
+- "We have three versions of the free-trial signup. Which one do we ship?"
+- "Write the one line under our Pro price that gets free users to upgrade."
+- "Write the subject line and opening of the email announcing our new feature."
+- "Which launch offer do we run: six months free, £100 to switch, or free international payments?"
+- "Set the monthly price for our first paid plan."
 
-Each answer comes from a user model: an audience of simulated people built from
-survey and interview data and measured against real responses. There are 50+
-ready-made audiences, and custom ones can be built from your own data. A test takes
-from a few minutes to about half an hour.
+Claude writes the work, tests it on simulated users, and fixes what they push back
+on before handing it to you. Each answer comes from a user model: a specific target
+audience, simulated as hundreds of individual respondents and built from real human
+data. The first public user models, US and UK Consumer Finance and US and UK
+Online Shoppers, are coming soon, with more to follow. Custom user models of your own users are
+available on the Custom plan.
 
 The plugin bundles two things:
 
@@ -56,21 +59,20 @@ with `claude mcp remove semilattice` so Claude sees one set of tools.
 
 ## Concepts
 
-- **User models** are AI representations of groups of people, built from surveys and
-  qualitative sources and measured against human ground truth. There are 50+ ready-made
-  models, and custom ones can be built.
+- **User models** simulate a specific target audience as hundreds of individual
+  respondents, built from real human data. Accuracy is measured by comparing their
+  predictions with how real people answered, question by question.
 - **Simulations** predict specific user behaviour, tied to a decision or goal.
 - **Modes:** **User Research** simulates users answering questions about preferences
   and attitudes. **User Journey** simulates users interacting with a live interface,
   for flow and usability testing.
 
-The workflow is **plan → run → interpret**. A run takes anywhere from a few minutes
-to about half an hour.
+The workflow is **plan → run → interpret**, and results come back in minutes.
 
 ## Use
 
-Ask Claude to test something with users, for example "test whether this tagline
-lands with UK developers" or "plan simulations for the claims in this PRD". The skill
+Ask Claude to test something with users, for example "test the line under our Pro
+price with UK consumers" or "plan simulations for the claims in this PRD". The skill
 loads, proposes a plan and its cost in time, and asks before running anything.
 
 ## Data
