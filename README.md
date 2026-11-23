@@ -17,8 +17,8 @@ before users see it.
 Claude writes the work, tests it on simulated users, and fixes what they push back
 on before handing it to you. Each answer comes from a user model: a specific target
 audience, simulated as hundreds of individual respondents and built from real human
-data. The first public user models are US and UK Consumer Finance and US and UK
-Online Shoppers, with more to come. Custom user models of your own users are
+data. The first public user models, US and UK Consumer Finance and US and UK
+Online Shoppers, are coming soon, with more to follow. Custom user models of your own users are
 available on the Custom plan.
 
 The plugin bundles two things:
