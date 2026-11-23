@@ -1,8 +1,8 @@
 {
   "name": "semilattice",
   "displayName": "Semilattice",
-  "version": "0.3.1",
-  "description": "Fast feedback from simulated users before you build or ship. Test headlines, landing pages, pricing, features and product ideas, and see what share of an audience say they would sign up, pay or switch. Includes a skill that turns a PRD or spec into tests.",
+  "version": "0.4.0",
+  "description": "The user simulation layer for agentic marketing, product and design work. Accurate user feedback in minutes from state-of-the-art models built from real human data, so you can fix slop and optimise your work before users see it. Includes a skill that turns a brief, PRD or spec into tests.",
   "author": {
     "name": "Semilattice",
     "email": "support@semilattice.ai",
