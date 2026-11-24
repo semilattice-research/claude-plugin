@@ -36,8 +36,8 @@ The plugin bundles two things:
 
 1. Add the Semilattice plugin from the plugin directory.
 2. Open the plugin's **Connectors** tab and connect Semilattice.
-3. Sign in with your Google email. This creates a Semilattice account if you don't
-   have one.
+3. Sign in to your Semilattice account, or create one, with Google, GitHub,
+   LinkedIn, or email and password.
 
 ### Claude Code
 
@@ -50,8 +50,8 @@ Then sign in:
 
 1. Run `/mcp`. You should see the Semilattice server listed as disconnected.
 2. Select it, press Enter and choose **Authenticate**.
-3. Complete the sign-in flow with your Google email. This creates a Semilattice
-   account if you don't have one.
+3. Sign in to your Semilattice account, or create one, with Google, GitHub,
+   LinkedIn, or email and password.
 
 If you already added the server by hand with
 `claude mcp add --transport http semilattice https://mcp.semilattice.ai`, remove it
