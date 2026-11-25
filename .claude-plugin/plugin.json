@@ -1,7 +1,7 @@
 {
   "name": "semilattice",
   "displayName": "Semilattice",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "The user simulation layer for agentic marketing, product and design work. Accurate user feedback in minutes from state-of-the-art models built from real human data, so you can fix slop and optimise your work before users see it. Includes a skill that turns a brief, PRD or spec into tests.",
   "author": {
     "name": "Semilattice",
